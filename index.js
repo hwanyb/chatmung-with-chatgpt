@@ -17,7 +17,7 @@ const openai = new OpenAIApi(config);
 app.use(express.json());
 app.use(cors());
 
-app.post('/chat', async (req, res) => {
+app.post('/api/chat', async (req, res) => {
     const { question } = req.body;
     const response = await openai.createCompletion({
         model: "text-davinci-003",
@@ -43,12 +43,16 @@ function generatePrompt(question) {
 
 // 리액트 정적파일 제공
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, 'client/build')));
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'client/build')));
 
-// 라우트 설정
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname + '/client/build/index.html'));
-})
+    // 라우트 설정
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname + '/client/build/index.html'));
+    })
+
+}
+
 
 app.listen(port, () => {
     console.log("Example app port: " + port);

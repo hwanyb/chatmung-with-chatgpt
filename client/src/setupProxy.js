@@ -5,8 +5,8 @@ dotenv.config();
 
 export default function (app) {
     app.use(
-        createProxyMiddleware('/chat', {
-            target: process.env.PORT || "http://localhost:3001",
+        createProxyMiddleware('/api/chat', {
+            target: "http://localhost:3001",
             changeOrigin: true
         })
     );

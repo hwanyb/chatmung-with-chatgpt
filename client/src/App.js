@@ -61,7 +61,7 @@ function App() {
           setReply(timeArr[Math.floor(Math.random() * timeArr.length)]);
         }, 1000);
       } else {
-        const response = await fetch('http://localhost:3001/chat', {
+        const response = await fetch('https://chatmung.herokuapp.com/api/chat', {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
