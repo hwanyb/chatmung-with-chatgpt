@@ -37,33 +37,32 @@ body {
 .dogSays {
     position: relative;
     width: 100vw;
-    height: fit-content;
-    height: -moz-fit-content;
+    height: 150px;
     display: flex;
-    justify-self: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .dogSays img {
     width: 500px;
     margin: 0 auto;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
 }
 
 .dogText {
-    width: 100%;
+    width: 450px;
     font-family: 'DungGeunMo';
-    font-size: 24px;
-    position: absolute;
+    font-size: 18px;
     z-index: 101;
-    margin-top: 60px;
 }
 
-.dogText>small {
-    font-size: 20px;
-}
 
 .dog {
-    width: 400px;
-    height: 400px;
+    width: 350px;
+    height: 350px;
     background-size: contain;
     background-repeat: no-repeat;
 }
@@ -109,17 +108,15 @@ body {
     .base {
         padding: 200px 0;
     }
+    .dogSays {
+        height: calc(90vw * 0.3);
 
+    }
     .dogSays img {
-        width: 70vw;
+        width: 90vw;
     }
 
     .dogText {
-        font-size: 18px;
-        margin-top: 8%;
-    }
-
-    .dogText>small {
         font-size: 14px;
     }
 
