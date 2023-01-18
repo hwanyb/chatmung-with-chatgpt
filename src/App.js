@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 function App() {
   const [question, setQuestion] = useState('');
   const [reply, setReply] = useState('');
 
+  const audioRef = useRef(null);
+
   const checkText = async() => {
     setReply("......");
     setQuestion("");
-
-
+    setTimeout(() => {
+      audioRef.current.play();
+    }, 500)
     if (question.length < 1) {
       setTimeout(() => {
         setReply("할 말을 적어달라 멍!");
@@ -18,13 +21,11 @@ function App() {
         setTimeout(() => {
           setReply("알겠다 멍! 불끄겠다 멍!");
           document.body.classList.add("dark");
-          // base.classList.add("dark");
         }, 1000);
       } else if (question.includes("불켜") || question.includes("불키") || question.includes("불 켜")) {
         setTimeout(() => {
           setReply("알겠다 멍! 불키겠다 멍!");
           document.body.classList.remove("dark");
-          // base.classList.remove("dark");
         }, 1000);
       } else if (question.includes("안녕")) {
         setTimeout(() => {
@@ -74,9 +75,10 @@ function App() {
   return (
     <div className="base">
       <div className="dogSays">
+        <img src={process.env.PUBLIC_URL + "chat.png"} />
         <p className="dogText" id="dogConsole">{reply === "" ? "Welcome to 챗멍!" : reply}</p>
       </div>
-      <div className="dog" />
+      <img className="dog" src={process.env.PUBLIC_URL + "dog.png"} />
       <div className="inputLayout">
         <input
           onChange={e => setQuestion(e.target.value)}
@@ -91,6 +93,7 @@ function App() {
       <div id="button" className="button" onClick={checkText}>
         말걸기
       </div>
+      <audio ref={audioRef} src={process.env.PUBLIC_URL + "mung.mp3"} />
     </div>
   );
 }
