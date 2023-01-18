@@ -1,28 +1,23 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const app = express();
-require("dotenv").config();
-const port = process.env.PORT || 3001;
+import express from 'express';
+import cors from 'cors';
+import dotenv from "dotenv";
+import path from 'path';
+import { Configuration, OpenAIApi } from 'openai';
 
-const OpenAI = require('openai');
-const { Configuration, OpenAIApi } = OpenAI;
+dotenv.config();
+
+const app = express();
+const port = process.env.PORT || 3001;
 
 const config = new Configuration({
     apiKey: process.env.OPENAI_API_KEY
 });
-
 const openai = new OpenAIApi(config);
 
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(cors());
 
-function generatePrompt(question) {
-    return `질문에 대한 대답 끝에 꼭 멍 을 붙여주고, 한국어로 말하되 꼭 반말로 대답해줘. ${question}`;
-}
-
-
-app.post('/', async (req, res) => {
+app.post('/chat', async (req, res) => {
     const { question } = req.body;
     const response = await openai.createCompletion({
         model: "text-davinci-003",
@@ -42,7 +37,19 @@ app.post('/', async (req, res) => {
     }
 });
 
+function generatePrompt(question) {
+    return `질문에 대한 대답 끝에 꼭 멍 을 붙여주고, 한국어로 말하되 꼭 반말로 대답해줘. ${question}`;
+}
+
+// 리액트 정적파일 제공
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+// 라우트 설정
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/client/build/index.html'));
+})
+
 app.listen(port, () => {
     console.log("Example app port: " + port);
 })
-
