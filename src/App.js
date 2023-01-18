@@ -6,7 +6,7 @@ function App() {
 
   const audioRef = useRef(null);
 
-  const checkText = async() => {
+  const checkText = async () => {
     setReply("......");
     setQuestion("");
     setTimeout(() => {
@@ -61,7 +61,20 @@ function App() {
           setReply(timeArr[Math.floor(Math.random() * timeArr.length)]);
         }, 1000);
       } else {
-        console.log("규칙에 없는 키워드 입력")
+        const response = await fetch('http://localhost:3001/', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            question: question
+          })
+        });
+        const data = await response.json();
+        if (response.status !== 200) {
+          throw data.error || new Error(`Request failed with status ${response.status}`);
+        }
+        setReply(data.message)
       }
     }
   }
